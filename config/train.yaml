@@ -1,0 +1,18 @@
+weights: null
+model: "yolov3"                    # or path to .yaml
+dataset: "pascal"                   # or path to custom dataset directory (same format as pascal)
+class: null                           # null or 0 or "0" or "0,1,2,3"
+imgsz: 640
+train_val_split: 0.8                # ratio of train/whole
+batch_size: 8
+epochs: 10
+optimizer: "Adam"
+lr: 0.01
+device: null                          # null or 0 or "0" or "0,1,2,3" or cpu
+result_dir: "run/train"
+exp_name: "exp"                     # save to result/name
+early_stopping_patience: 50
+lr_schedule: "reduceOnPlateau"
+resume: False
+seed: 42
+message: "hello world"
