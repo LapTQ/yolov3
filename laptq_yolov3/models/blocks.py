@@ -62,7 +62,6 @@ class BlockBottleNeck(nn.Module):
             bias=False,
         )
 
-    
     def forward(self, x):
         identity = x
         x = self.block_conv_1(x)
@@ -71,5 +70,3 @@ class BlockBottleNeck(nn.Module):
         x += identity
         x = F.relu(x)
         return x
-
-        

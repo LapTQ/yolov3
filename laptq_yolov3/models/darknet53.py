@@ -8,7 +8,7 @@ from laptq_yolov3.models import BlockConv, BlockBottleNeck
 
 
 class Darknet53(nn.Module):
-    
+
     def __init__(self, **kwargs):
         super(Darknet53, self).__init__()
 
@@ -46,8 +46,7 @@ class Darknet53(nn.Module):
 
                 self.list__block.append(block)
                 self.list__to_capture.append(i_repeat == num__repeat - 1 and to_capture)
-        
-    
+
     def forward(self, x):
         list__captured = []
         for block, to_capture in zip(self.list__block, self.list__to_capture):
@@ -68,7 +67,3 @@ if __name__ == "__main__":
     out = model(x)
 
     print([_.shape for _ in out])
-        
-
-        
-        
