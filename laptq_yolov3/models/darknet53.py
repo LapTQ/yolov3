@@ -17,13 +17,13 @@ class Darknet53(nn.Module):
             (1, BlockConv, [32, 64, 3, 1, 2], False),
             (1, BlockBottleNeck, [64, 64, None, None, None], False),
             (1, BlockConv, [64, 128, 3, 1, 2], False),
-            (2, BlockBottleNeck, [128, 128, None, None, None], False),
+            (2, BlockBottleNeck, [128, 128, None, None, None], False), # C2 /4
             (1, BlockConv, [128, 256, 3, 1, 2], False),
-            (8, BlockBottleNeck, [256, 256, None, None, None], True),
+            (8, BlockBottleNeck, [256, 256, None, None, None], True), # C3 /8
             (1, BlockConv, [256, 512, 3, 1, 2], False),
-            (8, BlockBottleNeck, [512, 512, None, None, None], True),
+            (8, BlockBottleNeck, [512, 512, None, None, None], True),   # C4 /16
             (1, BlockConv, [512, 1024, 3, 1, 2], False),
-            (4, BlockBottleNeck, [1024, 1024, None, None, None], True),
+            (4, BlockBottleNeck, [1024, 1024, None, None, None], True), # C5 /32
         ]
 
         self.list__block = nn.ModuleList()

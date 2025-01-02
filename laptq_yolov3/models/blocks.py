@@ -70,3 +70,69 @@ class BlockBottleNeck(nn.Module):
         x += identity
         x = F.relu(x)
         return x
+
+
+class BlockUpsampleAdd(nn.Module):
+
+    def __init__(self, **kwargs):
+        super(BlockUpsampleAdd, self).__init__()
+
+        list__in_channels = kwargs["list__in_channels"]
+        out_channels = kwargs["out_channels"]
+
+        in_channels_1 = list__in_channels[0]
+        in_channels_2 = list__in_channels[1]
+
+        self.conv1 = nn.Conv2d(
+            in_channels=in_channels_1,
+            out_channels=out_channels,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias=False,
+        )
+        self.bn1 = nn.BatchNorm2d(out_channels)
+
+        self.conv2 = nn.Conv2d(
+            in_channels=in_channels_2,
+            out_channels=out_channels,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias=False,
+        )
+        self.bn2 = nn.BatchNorm2d(out_channels)
+
+    def forward(self, x, y):
+        _, _, H, W = y.size()
+        x = F.interpolate(x, size=(H, W), mode="nearest")
+        x = self.conv1(x)
+        x = self.bn1(x)
+
+        y = self.conv2(y)
+        y = self.bn2(y)
+
+        out = x + y
+
+        return out
+
+
+class HeadDetection(nn.Module):
+
+    def __init__(self, **kwargs):
+        super(HeadDetection, self).__init__()
+
+        out_channels = kwargs["out_channels"]
+
+        self.conv = nn.Conv2d(
+            in_channels=256,
+            out_channels=out_channels,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias=True,
+        )
+
+    def forward(self, x):
+        x = self.conv(x)
+        return x
