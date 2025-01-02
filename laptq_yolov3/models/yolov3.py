@@ -15,29 +15,17 @@ class YOLOv3(nn.Module):
 
         self.backbone = Darknet53()
         self.neck = FPN()
-        self.head1 = HeadDetection(
-            out_channels=self.num__anchors * (5 + self.num__classes),
-        )
-        self.head2 = HeadDetection(
-            out_channels=self.num__anchors * (5 + self.num__classes),
-        )
-        self.head3 = HeadDetection(
-            out_channels=self.num__anchors * (5 + self.num__classes),
+        self.head = HeadDetection(
+            num__anchors=self.num__anchors,
+            num__classes=self.num__classes,
         )
 
     
     def forward(self, x):
-        x1, x2, x3 = self.backbone(x)
-        x1, x2, x3 = self.neck([x1, x2, x3])
-        x1 = self.head1(x1)
-        x2 = self.head2(x2)
-        x3 = self.head3(x3)
-
-        x1 = x1.view(x1.size(0), self.num__anchors, 5 + self.num__classes, x1.size(2), x1.size(3)).permute(0, 1, 3, 4, 2).contiguous()
-        x2 = x2.view(x2.size(0), self.num__anchors, 5 + self.num__classes, x2.size(2), x2.size(3)).permute(0, 1, 3, 4, 2).contiguous()
-        x3 = x3.view(x3.size(0), self.num__anchors, 5 + self.num__classes, x3.size(2), x3.size(3)).permute(0, 1, 3, 4, 2).contiguous()
-
-        return [x1, x2, x3]
+        x = self.backbone(x)
+        x = self.neck(x)
+        x = self.head(x)
+        return x
 
 
 if __name__ == "__main__":

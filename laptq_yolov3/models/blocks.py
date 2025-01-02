@@ -122,17 +122,37 @@ class HeadDetection(nn.Module):
     def __init__(self, **kwargs):
         super(HeadDetection, self).__init__()
 
-        out_channels = kwargs["out_channels"]
+        self.num__anchors = kwargs["num__anchors"]
+        self.num__classes = kwargs["num__classes"]
 
-        self.conv = nn.Conv2d(
-            in_channels=256,
-            out_channels=out_channels,
-            kernel_size=1,
-            stride=1,
-            padding=0,
-            bias=True,
+        out_channels = self.num__anchors * (5 + self.num__classes)
+
+        self.list__block = nn.ModuleList(
+            [
+                nn.Conv2d(
+                    in_channels=256,
+                    out_channels=out_channels,
+                    kernel_size=1,
+                    stride=1,
+                    padding=0,
+                    bias=True,
+                )
+                for _ in range(3)
+            ]
         )
 
-    def forward(self, x):
-        x = self.conv(x)
-        return x
+    def forward(self, list__x):
+        list__x = [block(x) for block, x in zip(self.list__block, list__x)]
+        list__x = [
+            x.view(
+                x.size(0),
+                self.num__anchors,
+                5 + self.num__classes,
+                x.size(2),
+                x.size(3),
+            )
+            .permute(0, 1, 3, 4, 2)
+            .contiguous()
+            for x in list__x
+        ]
+        return list__x
