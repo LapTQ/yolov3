@@ -12,6 +12,8 @@ class YOLOv3(nn.Module):
 
         self.num__anchors = kwargs["num__anchors"]
         self.num__classes = kwargs["num__classes"]
+        self.list__anchor_box__wh = kwargs["list__anchor_box__wh"]
+        self.list__anchor_box__i_layer = kwargs["list__anchor_box__i_layer"]
 
         self.backbone = Darknet53()
         self.neck = FPN()
@@ -20,7 +22,6 @@ class YOLOv3(nn.Module):
             num__classes=self.num__classes,
         )
 
-    
     def forward(self, x):
         x = self.backbone(x)
         x = self.neck(x)
