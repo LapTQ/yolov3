@@ -21,6 +21,8 @@ class YOLOv3(nn.Module):
             num__anchors=self.num__anchors,
             num__classes=self.num__classes,
         )
+        self.list__i_layer__scale = [1/8, 1/16, 1/32]
+
 
     def forward(self, x):
         x = self.backbone(x)

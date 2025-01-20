@@ -11,7 +11,7 @@
 - loss:
     - gán GT với anchor: 1-1 (trên cả 3 tầng)
         - rescale GT box về tọa độ của 1 tầng => xem tâm GT box đó thuộc cell nào trong grid => tính offset của tâm box với vị trí của cell đó
-        - tính iou của GT box với anchor (tâm anchor đặt tại offset, không phải giữa cell, thực ra cũng tương đương như việc sê dịch tâm box đặt vào tâm cell).
+        - tính iou của GT box với anchor (tâm anchor đặt tâm cell, không phải tâm box).
         - Chỉ xét iou của GT box với 3 anchor (x3=9 chỏ 3 tầng) tại cell chứa tâm GT thôi, chứ không xét tất cả anchor rải rác khắp chiều ngang dọc.
     - với những anchor được gán: tính 3 loss: objness, iou, cls
         - objness: BCE (logit + sigmoid)

@@ -67,7 +67,7 @@ class BlockBottleNeck(nn.Module):
         x = self.block_conv_1(x)
         x = self.block_conv_2(x)
         identity = self.conv3(identity)
-        x += identity
+        x = x + identity
         x = F.relu(x)
         return x
 

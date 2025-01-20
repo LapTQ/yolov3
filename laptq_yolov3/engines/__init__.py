@@ -5,6 +5,7 @@ from laptq_yolov3.loaders import get__dataloader
 from laptq_yolov3.models import YOLOv3
 from laptq_yolov3.losses import LossYOLOv3
 from laptq_pyutils.log import load_logger
+from laptq_pyutils.mics import set_seed
 
 import torch
 from torch.optim import SGD
@@ -133,6 +134,8 @@ class Trainer:
 
 if __name__ == "__main__":
 
+    set_seed(42)
+
     dataloader__train = get__dataloader(
         path__dir__img="/media/laptq/data/workspace/yolov3/datasets/COCO--reformated/val2017/images",
         path__dir__lbl="/media/laptq/data/workspace/yolov3/datasets/COCO--reformated/val2017/labels",
@@ -147,7 +150,7 @@ if __name__ == "__main__":
         "r",
     ) as f:
         list__anchor_box__wh = yaml.load(f, Loader=yaml.FullLoader)
-    list__anchor_box__i_layer = [0, 0, 0, 1, 1, 1, 2, 2, 2] # 
+    list__anchor_box__i_layer = [0, 0, 0, 1, 1, 1, 2, 2, 2]
     assert len(list__anchor_box__wh) == len(list__anchor_box__i_layer)
 
     model = YOLOv3(
@@ -182,7 +185,7 @@ if __name__ == "__main__":
         device=device,
         scheduler=scheduler,
     )
-
+    
     trainer.train(
         num__epoch=10,
         num__step_running=1,
